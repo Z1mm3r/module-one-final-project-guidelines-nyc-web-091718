@@ -7,7 +7,6 @@ class Stock < ActiveRecord::Base
 
     response = RestClient.get "https://api.iextrading.com/1.0/stock/#{self.ticker}/quote"
     respons_par = JSON.parse(response)
-    binding.pry
     respons_par['latestPrice']
   end
 
