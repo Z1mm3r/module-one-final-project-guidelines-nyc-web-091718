@@ -7,3 +7,5 @@ gem "pry"
 gem "require_all"
 gem "rest-client"
 gem "smarter_csv"
+gem "faker"
+gem 'money'

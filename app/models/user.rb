@@ -21,7 +21,11 @@ class User < ActiveRecord::Base
     stock = Stock.find_by(ticker: ticker)
     price = stock.current_price
     transaction_cost = price * number_of_shares
-    if transaction_cost > self.cash_balance
+
+    if number_of_shares <= 0
+      puts "You must enter an amount greater than 0."
+      nil
+    elsif transaction_cost > self.cash_balance
       puts "You do not have enough money to make this trade."
       nil
     else
@@ -31,7 +35,7 @@ class User < ActiveRecord::Base
       self.cash_balance -= transaction_cost
       self.save
       self.transactions << transaction
-      puts "Your purchase cost was $#{transaction_cost}."
+      puts "Your purchase cost was $#{User_cli.float_to_cash(transaction_cost)}."
       transaction
     end
   end
@@ -42,7 +46,11 @@ class User < ActiveRecord::Base
     price = stock.current_price
     transaction_proceeds = price * number_of_shares
 
-    if number_of_shares > currently_owned_stocks[ticker]
+    if number_of_shares <= 0
+      puts "You must enter an amount greater than 0."
+      nil
+
+    elsif number_of_shares > currently_owned_stocks[ticker]
       puts "You do not have enough shares to make this trade."
       nil
     else
@@ -52,7 +60,7 @@ class User < ActiveRecord::Base
       self.cash_balance += transaction_proceeds
       self.save
       self.transactions << transaction
-      puts "Your account has been credited $#{transaction_proceeds}."
+      puts "Your account has been credited $#{User_cli.float_to_cash(transaction_proceeds.to_f)}."
       transaction
 
     end
@@ -78,8 +86,8 @@ class User < ActiveRecord::Base
             owned_stocks[transaction.ticker] -= transaction.num_shares
           end
         end
-
       end #end of each
+      owned_stocks.delete_if{|key,value| value <= 0}
       owned_stocks
   end #end of method
 

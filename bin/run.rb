@@ -29,19 +29,61 @@ def seed_tickers_and_companies
 
 end
 
+def seed_users
+    10.times do
+      user = User.new
+      user.name = Faker::Name.name
+      user.cash_balance = rand(100000).to_f
+      user.save
+    end
+end
 
+def seed_buy_transactions
 
+  number_of_stocks = Stock.all.count
+    User.all.each do |user|
+      10.times do
+        user.purchase_stock_by_ticker(Stock.find(rand(number_of_stocks)).ticker,rand(15))
+      end
+    end
 
-puts "Type seed if you wish to seed the database otherwise, press enter"
-input =  gets.chomp
-
-if input == "seed"
-  seed_tickers_and_companies
 end
 
 
+def seed_sell_transactions
+  User.all.each do |user|
+      stocks_to_sell = user.currently_owned_stocks.to_a.sample(3).to_h
+
+      stocks_to_sell.each do |k,v|
+        user.sell_stock_by_ticker(k,rand(v))
+      end
+  end
+end
 
 
+# puts "Type seed if you wish to seed the database otherwise, press enter"
+# input =  gets.chomp
+#
+# if input == "seed"
+#   seed_tickers_and_companies
+#   seed_users
+#   seed_buy_transactions
+#   seed_sell_transactions
+# end
+
+
+admin_cli = Admin_cli.new
+
+user_cli  = User_cli.new
+
+puts "would you like to log in as an [admin] or [user]?"
+input = gets.chomp.downcase
+
+if(input == "admin")
+  admin_cli.admin_main
+elsif(input == "user")
+  user_cli.user_main
+end
 
 
 

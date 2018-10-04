@@ -17,6 +17,8 @@ GEM
     concurrent-ruby (1.0.5)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
+    faker (1.9.1)
+      i18n (>= 0.7)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.1)
@@ -25,6 +27,8 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
     minitest (5.10.1)
+    money (6.13.0)
+      i18n (>= 0.6.4, <= 2)
     netrc (0.11.0)
     pry (0.10.4)
       coderay (~> 1.1.0)
@@ -60,6 +64,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  faker
+  money
   pry
   require_all
   rest-client
